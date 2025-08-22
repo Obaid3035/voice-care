@@ -1,35 +1,19 @@
-# Node.js
-node_modules/
+# Env files
+.env
+.env.*
+client/.env
+server/.env
+server/.env.test
 
-# Build output
+# Node & build
+node_modules/
 dist/
 build/
 .cache/
 *.log
 
-# Local env files
-.env
-.env.*           # any env variants
-client/.env
-client/.env.*
-server/.env
-server/.env.*
-
-# Editor junk
-.DS_Store
-*.swp
-*.swo
-*.tmp
+# Editor/OS
 .vscode/
 .idea/
-*.iml
-
-# OS
-Thumbs.db
-
-# Railway / deployment
-.railway/
-
-# Optional: Yarn / npm
-package-lock.json
-yarn.lock
+*.swp
+*.DS_Store
