@@ -1,0 +1,244 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  :root {
+    --primary: 48, 60, 108;
+    --primary-dark: 35, 41, 74;
+    --primary-light: 74, 90, 148;
+
+    --accent: 176, 222, 229;
+    --accent-foreground: 48, 60, 108;
+
+    --background: 255, 255, 255;
+    --background-secondary: 249, 250, 251;
+
+    --text-primary: 17, 24, 39;
+    --text-secondary: 107, 114, 128;
+    --text-muted: 156, 163, 175;
+
+    --border: 229, 231, 235;
+    --border-focus: 48, 60, 108;
+
+    --input: 255, 255, 255;
+    --input-border: 209, 213, 219;
+
+    --ring: 48, 60, 108;
+    --ring-offset: 255, 255, 255;
+
+    --overlay: 255, 255, 255;
+    --overlay-foreground: 17, 24, 39;
+
+    --sidebar: 255, 255, 255;
+    --sidebar-foreground: 17, 24, 39;
+    --sidebar-primary: 48, 60, 108;
+    --sidebar-primary-foreground: 255, 255, 255;
+    --sidebar-accent: 249, 250, 251;
+    --sidebar-accent-foreground: 48, 60, 108;
+    --sidebar-border: 229, 231, 235;
+    --sidebar-ring: 48, 60, 108;
+  }
+
+  .dark {
+    --primary: 74, 90, 148;
+    --primary-dark: 48, 60, 108;
+    --primary-light: 96, 117, 183;
+
+    --accent: 45, 72, 78;
+    --accent-foreground: 176, 222, 229;
+
+    --background: 15, 23, 42;
+    --background-secondary: 30, 41, 59;
+
+    --text-primary: 248, 250, 252;
+    --text-secondary: 148, 163, 184;
+    --text-muted: 100, 116, 139;
+
+    --border: 51, 65, 85;
+    --border-focus: 74, 90, 148;
+
+    --input: 30, 41, 59;
+    --input-border: 71, 85, 105;
+
+    --ring: 74, 90, 148;
+    --ring-offset: 15, 23, 42;
+
+    --overlay: 30, 41, 59;
+    --overlay-foreground: 248, 250, 252;
+
+    --sidebar: 30, 41, 59;
+    --sidebar-foreground: 248, 250, 252;
+    --sidebar-primary: 74, 90, 148;
+    --sidebar-primary-foreground: 255, 255, 255;
+    --sidebar-accent: 51, 65, 85;
+    --sidebar-accent-foreground: 176, 222, 229;
+    --sidebar-border: 51, 65, 85;
+    --sidebar-ring: 74, 90, 148;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  button {
+    @apply cursor-pointer;
+  }
+  .auth-container {
+    @apply min-h-screen w-full grid grid-cols-1 lg:grid-cols-12 bg-[#f9fafb];
+  }
+
+  .auth-left-panel {
+    @apply hidden lg:col-span-6 lg:flex lg:items-center lg:justify-center bg-[rgb(var(--primary))] relative overflow-hidden;
+  }
+
+  .auth-right-panel {
+    @apply col-span-1 lg:col-span-6 flex min-h-screen items-center justify-center bg-white px-4 sm:px-6 lg:px-8;
+  }
+
+  .form-input {
+    @apply h-12 px-4 rounded-lg border border-[rgb(var(--input-border))] 
+            bg-[rgb(var(--input))] text-[rgb(var(--text-primary))] 
+            placeholder:text-[rgb(var(--text-secondary))]
+            focus:border-[rgb(var(--border-focus))] focus:ring-2 
+            focus:ring-[rgb(var(--ring))]/20 transition-colors;
+  }
+
+  .form-label {
+    @apply text-sm font-medium text-[rgb(var(--text-primary))];
+  }
+
+  .form-button {
+    @apply w-full h-12 bg-[rgb(var(--primary))] hover:bg-[rgb(var(--primary-dark))] 
+            text-white font-semibold rounded-lg transition-colors 
+            focus:ring-2 focus:ring-[rgb(var(--ring))]/20 
+            disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .feature-icon-container {
+    @apply flex h-12 w-12 items-center justify-center rounded-xl bg-white/10;
+  }
+
+  .feature-icon {
+    @apply h-6 w-6 text-white;
+  }
+
+  .mobile-feature-icon {
+    @apply mx-auto w-12 h-12 bg-[rgb(var(--primary))]/10 rounded-xl 
+            flex items-center justify-center;
+  }
+
+  .auth-link {
+    @apply font-medium text-[rgb(var(--primary))] hover:text-[rgb(var(--primary-dark))] 
+            transition-colors;
+  }
+
+  [data-theme="light"] .alert-destructive {
+    @apply border-red-200 bg-red-50 text-red-800;
+  }
+
+  [data-theme="light"] .form-input {
+    @apply border-gray-300 bg-white text-gray-900;
+  }
+
+  [data-theme="light"] .form-label {
+    @apply text-gray-900;
+  }
+
+  [data-theme="light"] .form-button {
+    @apply bg-[#303c6c] text-white hover:bg-[#4a5a94];
+  }
+
+  [data-theme="light"] .form-message {
+    @apply text-red-600 text-sm;
+  }
+
+  [data-theme="light"] .form-input[data-error="true"] {
+    @apply border-red-300 focus:border-red-500 focus:ring-red-200;
+  }
+
+  [data-theme="light"] .form-item[data-error="true"] .form-label {
+    @apply text-red-600;
+  }
+
+  [data-theme="light"] .form-message {
+    @apply text-red-600;
+  }
+
+  [data-theme="light"] .form-input:focus:invalid {
+    @apply border-red-500 ring-red-200;
+  }
+
+  [data-theme="light"] .form-item:has(.form-message) .form-input {
+    @apply border-red-300;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-from-top-2 {
+  animation: slideInFromTop 0.3s ease-out;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--background-secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--primary-light));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--primary));
+}
+
+@theme inline {
+  --color-sidebar: rgb(var(--sidebar));
+  --color-sidebar-foreground: rgb(var(--sidebar-foreground));
+  --color-sidebar-primary: rgb(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: rgb(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: rgb(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: rgb(var(--sidebar-accent-foreground));
+  --color-sidebar-border: rgb(var(--sidebar-border));
+  --color-sidebar-ring: rgb(var(--sidebar-ring));
+  --color-border: rgb(var(--border));
+  --color-ring: rgb(var(--ring));
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--text-primary));
+}

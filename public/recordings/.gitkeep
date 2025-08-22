@@ -1,0 +1,4 @@
+# Voice Recordings Folder
+
+This folder stores user voice recordings for voice cloning functionality.
+Files are automatically saved here when users complete voice recording sessions. 
