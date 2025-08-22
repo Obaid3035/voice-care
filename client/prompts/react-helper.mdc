@@ -1,0 +1,132 @@
+# App Description
+You are building a mobile-first ReactJS web app that acts as a command center for a smart calming device for parents. This device plays adaptive calming content (lullabies, stories, affirmations) in a cloned voice, detects baby cries, captures camera snapshots, and adjusts behavior based on child response. The app is connected to a Fastify backend and Supabase (for Auth, not DB reads/writes).
+
+# Visual & UX Theme
+Use a soft, modern aesthetic that's calming and parent-friendly.
+- Font: Rounded sans-serif (like Inter or Nunito)
+- Colors:
+  - Primary (nav/accents): `#303c6c` (deep navy)
+  - Secondary (highlights/buttons): `#f9e69f` (warm pastel yellow)
+  - Backgrounds / soft UI: `#b0dee5` (light calming blue) and white
+- Layout: Clean card-based layout with rounded edges
+- Shadow: Soft drop shadows
+- Corners: Rounded-xl or 2xl
+- Use light/dark mode toggle with Tailwind + ShadCN defaults
+
+# Framework
+- Use **ReactJS + Tailwind CSS + ShadCN**
+- Mobile-first layout using Tailwind's `sm`, `md`, `lg` breakpoints
+- API calls will be made to Fastify backend routes (not directly to Supabase except for Auth)
+
+# Pages / Views to Build
+
+## 1. Authentication
+- `/login` — Email/password form using Supabase Auth client
+- `/register` — Create account form
+- Use form validation and toast feedback
+
+## 2. Adaptive Profile Selection
+- `/profiles` — List of all adaptive profiles (child identity, device, voice)
+- Actions:
+  - Switch profile
+  - Create new profile (opens modal/slide-over)
+- On select ➝ redirects to profile dashboard
+
+## 3. Dashboard (per profile)
+- `/dashboard/:profileId`
+- Shows:
+  - Linked device(s)
+  - Last played content
+  - Last cry event
+  - Quick actions: Generate Audio, Serve Content, View Logs
+
+## 4. Generate Audio
+- `/generate`
+- Form:
+  - Prompt input (textarea)
+  - Select voice (dropdown)
+  - Select content type: Story, Lullaby, Affirmation
+  - Language selector
+  - Emotional tone dropdown (optional)
+- Submit triggers `/api/generate-audio`
+- Show result with preview and play button
+
+## 5. Content Library
+- `/content`
+- List/grid of all generated content
+- Filters:
+  - Type (story/lullaby)
+  - Voice
+  - Language
+- Actions per item:
+  - Play
+  - Delete
+- Audio player component (mobile optimized)
+
+## 6. Event Log
+- `/logs`
+- Timeline list of events:
+  - Cry detected
+  - Content played
+  - Snapshot taken
+- Optional snapshot image preview
+- Filter by device or intensity
+
+## 7. Device Management
+- `/devices`
+- Cards per device showing:
+  - Name, status (online/offline), camera toggle
+  - Configure button (opens modal or route)
+- Device settings:
+  - Cry detection toggle
+  - Delay before playback
+  - Fallback mode selector
+  - Camera on/off
+  - Lighting preferences
+
+## 8. Serve Content to Device
+- `/serve`
+- Form to:
+  - Select profile
+  - Select content
+  - Set lighting (mode + brightness)
+  - Play now or schedule
+- Submit ➝ `/api/serve-content`
+
+## 9. Snapshot Gallery
+- `/snapshots`
+- Grid of images linked to cry events
+- Tap to view full image and metadata
+- Filter by date or device
+
+## 10. Settings
+- `/settings`
+- User profile settings
+- Delete account
+- Dark/light mode toggle
+- GDPR export placeholder
+
+# Component Guidelines
+- Use ShadCN UI for:
+  - Buttons
+  - Modals
+  - Tabs
+  - Dropdowns
+  - Inputs
+  - Sliders
+- Use Tailwind for layout (mobile first)
+- Use dynamic routing where needed (`/dashboard/:profileId`)
+- Responsive grid layouts for content and snapshot galleries
+- Audio playback component should be mobile-optimized (`<audio>` or custom)
+
+# API Strategy
+- All data (except auth) will be fetched via REST API from backend
+- Use React hooks (SWR or custom) to manage API state
+- Show skeleton loading states for slow calls
+- Secure routes via Supabase JWT auth guard
+
+# Bonus Features (Optional)
+If time allows, support:
+- Audio download to device (using signed URL)
+- Voice recorder in `/upload-voice` form
+- Snapshot upload simulation for testing
