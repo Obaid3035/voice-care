@@ -1,7 +1,13 @@
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 
 export interface EventLogFilters {
@@ -60,10 +66,10 @@ export function EventLogFilters({
     });
   };
 
-  const hasActiveFilters = 
-    filters.search !== '' || 
-    filters.eventType !== 'all' || 
-    filters.deviceId !== 'all' || 
+  const hasActiveFilters =
+    filters.search !== '' ||
+    filters.eventType !== 'all' ||
+    filters.deviceId !== 'all' ||
     filters.dateRange !== 'all';
 
   return (
@@ -102,7 +108,10 @@ export function EventLogFilters({
         </div>
 
         {/* Event Type */}
-        <Select value={filters.eventType} onValueChange={(value) => handleFilterChange('eventType', value)}>
+        <Select
+          value={filters.eventType}
+          onValueChange={(value) => handleFilterChange('eventType', value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder='Event Type' />
           </SelectTrigger>
@@ -116,7 +125,10 @@ export function EventLogFilters({
         </Select>
 
         {/* Device */}
-        <Select value={filters.deviceId} onValueChange={(value) => handleFilterChange('deviceId', value)}>
+        <Select
+          value={filters.deviceId}
+          onValueChange={(value) => handleFilterChange('deviceId', value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder='Device' />
           </SelectTrigger>
@@ -131,7 +143,10 @@ export function EventLogFilters({
         </Select>
 
         {/* Date Range */}
-        <Select value={filters.dateRange} onValueChange={(value) => handleFilterChange('dateRange', value)}>
+        <Select
+          value={filters.dateRange}
+          onValueChange={(value) => handleFilterChange('dateRange', value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder='Date Range' />
           </SelectTrigger>
@@ -156,7 +171,7 @@ export function EventLogFilters({
           )}
           {filters.eventType !== 'all' && (
             <Badge variant='secondary' className='text-xs'>
-              Type: {EVENT_TYPES.find(t => t.value === filters.eventType)?.label}
+              Type: {EVENT_TYPES.find((t) => t.value === filters.eventType)?.label}
             </Badge>
           )}
           {filters.deviceId !== 'all' && (
@@ -166,11 +181,11 @@ export function EventLogFilters({
           )}
           {filters.dateRange !== 'all' && (
             <Badge variant='secondary' className='text-xs'>
-              Date: {DATE_RANGES.find(d => d.value === filters.dateRange)?.label}
+              Date: {DATE_RANGES.find((d) => d.value === filters.dateRange)?.label}
             </Badge>
           )}
         </div>
       )}
     </div>
   );
-} 
+}

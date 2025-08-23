@@ -100,6 +100,7 @@ export const deleteVoiceCloneController = async (
     };
     return reply.code(STANDARD.OK).send(response);
   } catch (_error) {
+    console.log('Error', _error);
     throw new InternalServerError('Failed to delete voice clone');
   }
 };

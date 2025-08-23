@@ -24,9 +24,7 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
     disableRequestLogging: false,
   });
 
-
   const isProd = env.NODE_ENV === 'production';
-
 
   if (isProd) {
     const SUPABASE_URL = env.SUPABASE_URL;
@@ -56,7 +54,6 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
       if (!ct.includes('text/html')) reply.removeHeader('content-security-policy');
       next();
     });
-
 
     server.register(fastifyStatic, {
       root: path.join(__dirname, '../../client/dist'),

@@ -1,15 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import {
-    Baby,
-    Music,
-    Wifi,
-    WifiOff,
-    Camera,
-    Mic2,
-    Clock,
-    User
-} from 'lucide-react';
+import { Baby, Music, Wifi, WifiOff, Camera, Mic2, Clock, User } from 'lucide-react';
 import type { EventLog } from '@/lib/mockData';
 
 interface EventLogCardProps {
@@ -85,13 +76,13 @@ const formatTimestamp = (timestamp: string) => {
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
-  
+
   return date.toLocaleDateString();
 };
 
 const getIntensityColor = (intensity?: number) => {
   if (!intensity) return '';
-  
+
   if (intensity >= 8) return 'bg-red-500';
   if (intensity >= 6) return 'bg-orange-500';
   if (intensity >= 4) return 'bg-yellow-500';
@@ -112,8 +103,8 @@ export function EventLogCard({ event }: EventLogCardProps) {
           <div className='flex-1 min-w-0'>
             <div className='flex items-start justify-between gap-3 mb-3'>
               <div className='flex items-center gap-3'>
-                <Badge 
-                  variant='outline' 
+                <Badge
+                  variant='outline'
                   className={`text-xs font-semibold px-3 py-1.5 ${getEventColor(event.event_type)}`}
                 >
                   {getEventTitle(event.event_type)}
@@ -167,4 +158,4 @@ export function EventLogCard({ event }: EventLogCardProps) {
       </CardContent>
     </Card>
   );
-} 
+}
