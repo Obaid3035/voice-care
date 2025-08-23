@@ -24,7 +24,9 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
     disableRequestLogging: false,
   });
 
+
   const isProd = env.NODE_ENV === 'production';
+
 
   if (isProd) {
     const SUPABASE_URL = env.SUPABASE_URL;
@@ -55,12 +57,6 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
       next();
     });
 
-    await server.register(multipart, {
-      limits: {
-        fileSize: 10 * 1024 * 1024,
-        files: 1,
-      },
-    });
 
     server.register(fastifyStatic, {
       root: path.join(__dirname, '../../client/dist'),
@@ -84,6 +80,13 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
     await server.register(helmet, { contentSecurityPolicy: false });
   }
 
+  await server.register(multipart, {
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+      files: 1,
+    },
+  });
+
   await server.register(formbody);
   await server.register(websocket);
 
@@ -98,6 +101,7 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
         message: error.message,
         statusCode: error.statusCode,
       };
+
       reply.code(error.statusCode).send({
         success: false,
         error: apiError,
