@@ -136,7 +136,7 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
 export async function startServer(): Promise<FastifyInstance> {
   const app = await createApp();
 
-  const port = Number(env.API_PORT);
+  const port = Number(process.env.PORT ?? env.API_PORT ?? 3000);
   const host = env.API_HOST;
 
   // Graceful shutdown
