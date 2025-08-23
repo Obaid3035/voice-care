@@ -1,7 +1,5 @@
 import { supabase } from '@/lib/supabase';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 // Get auth token
 async function getAuthToken() {
   const {
@@ -12,7 +10,7 @@ async function getAuthToken() {
 
 export async function deleteAudioContent(id: string) {
   const token = await getAuthToken();
-  const response = await fetch(`${API_BASE_URL}/api/audio-content/${id}`, {
+  const response = await fetch(`/api/audio-content/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -28,12 +26,11 @@ export async function deleteAudioContent(id: string) {
 
 export async function getAudioContent() {
   const token = await getAuthToken();
-  const response = await fetch(`${API_BASE_URL}/api/audio-content`, {
+  const response = await fetch('/api/audio-content', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('response', response);
   if (!response.ok) {
     throw new Error('Failed to fetch audio content');
   }

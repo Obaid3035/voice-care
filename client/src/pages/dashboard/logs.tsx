@@ -1,12 +1,12 @@
+import { Activity, AlertTriangle, Bell, Calendar, Clock, Filter, TrendingUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Bell, Activity, Clock, AlertTriangle, TrendingUp, Calendar, Filter } from 'lucide-react';
 import DashboardLayout from '@/components/layouts/DashboardLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EventLogCard } from '@/components/logs/EventLogCard';
 import {
   EventLogFilters,
   type EventLogFilters as EventLogFiltersType,
 } from '@/components/logs/EventLogFilters';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockEventLogs } from '@/lib/mockData';
 
 export default function EventLogs() {
@@ -226,14 +226,14 @@ export default function EventLogs() {
                   activity.
                 </p>
                 <div className='flex items-center gap-2 text-sm text-[rgb(var(--text-muted))]'>
-                  <div className='w-2 h-2 bg-[rgb(var(--primary))] rounded-full animate-pulse'></div>
+                  <div className='w-2 h-2 bg-[rgb(var(--primary))] rounded-full animate-pulse' />
                   <span>Waiting for new events...</span>
                 </div>
               </CardContent>
             </Card>
           ) : (
             <div className='space-y-4'>
-              {filteredEvents.map((event) => ( 
+              {filteredEvents.map((event) => (
                 <EventLogCard key={event.id} event={event} />
               ))}
             </div>

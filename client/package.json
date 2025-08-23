@@ -7,13 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "format": "biome format --write .",
-    "format:check": "biome format .",
-    "lint:biome": "biome lint .",
-    "lint:biome:fix": "biome lint --write .",
-    "check": "biome check .",
-    "check:fix": "biome check --write ."
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -45,7 +39,6 @@
     "zod": "^4.0.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.1.2",
     "@types/node": "^24.1.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

@@ -1,11 +1,11 @@
-import { startServer } from "./app";
+import { startServer } from './app';
 
-process.on("unhandledRejection", (err) => {
-	console.error("Unhandled Rejection:", err);
-	process.exit(1);
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err);
+  process.exit(1);
 });
 
 startServer().catch((err) => {
-	console.error("Failed to start server:", err);
-	process.exit(1);
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });

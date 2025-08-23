@@ -8,12 +8,12 @@ import * as z from 'zod';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
@@ -150,7 +150,7 @@ export default function Login() {
           />
 
           <div className='text-right'>
-            <button 
+            <button
               type='button'
               onClick={() => navigate('/forgot-password')}
               className='auth-link text-sm'

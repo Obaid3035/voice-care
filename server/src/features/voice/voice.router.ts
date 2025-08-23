@@ -1,43 +1,46 @@
-import type { FastifyInstance } from "fastify";
-import { getCurrentUserVoiceController, uploadVoice, deleteVoiceCloneController } from "./voice.controller";
-import { checkValidRequest } from "../../utils/helpers/auth.helper";
-import { UploadVoiceSchema } from "./voice.schema";
-import { validateFormData } from "../../utils/helpers/validation.helper";
+import type { FastifyInstance } from 'fastify';
+import { checkValidRequest } from '../../utils/helpers/auth.helper';
+import { validateFormData } from '../../utils/helpers/validation.helper';
+import {
+  deleteVoiceCloneController,
+  getCurrentUserVoiceController,
+  uploadVoice,
+} from './voice.controller';
+import { UploadVoiceSchema } from './voice.schema';
 
 async function voiceRouter(fastify: FastifyInstance) {
   fastify.post(
-    "/voice-clones",
+    '/voice-clones',
     {
       config: {
-        description: "Upload voice for cloning",
+        description: 'Upload voice for cloning',
       },
       preValidation: [checkValidRequest, validateFormData(UploadVoiceSchema)],
     },
-    uploadVoice,
+    uploadVoice
   );
 
-  
   fastify.get(
-    "/voice-clones",
+    '/voice-clones',
     {
       config: {
-        description: "Get recorded voice",
+        description: 'Get recorded voice',
       },
       preValidation: [checkValidRequest],
     },
-    getCurrentUserVoiceController,
+    getCurrentUserVoiceController
   );
 
   fastify.delete(
-    "/voice-clones",
+    '/voice-clones',
     {
       config: {
-        description: "Delete voice clone",
+        description: 'Delete voice clone',
       },
       preValidation: [checkValidRequest],
     },
-    deleteVoiceCloneController,
+    deleteVoiceCloneController
   );
 }
 
-export default voiceRouter; 
+export default voiceRouter;

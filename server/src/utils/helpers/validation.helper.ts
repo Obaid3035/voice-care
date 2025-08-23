@@ -1,8 +1,11 @@
-import type { FastifyRequest, FastifyReply } from "fastify";
-import type { z } from "zod";
-import { ZodError } from "zod";
-import type { MultipartValue } from "@fastify/multipart";
-import type { FastifyRequestWithFormData, FastifyRequestWithValidatedBody } from "../../types/request.types";
+import type { MultipartValue } from '@fastify/multipart';
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
+import type {
+  FastifyRequestWithFormData,
+  FastifyRequestWithValidatedBody,
+} from '../../types/request.types';
 
 export function validateBody<T>(schema: z.ZodType<T>) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
@@ -15,23 +18,23 @@ export function validateBody<T>(schema: z.ZodType<T>) {
           field: err.path.join('.'),
           message: err.message,
         }));
-        
+
         const missingFields = validationDetails
-          .filter(detail => detail.message.toLowerCase().includes('required'))
-          .map(detail => detail.field);
+          .filter((detail) => detail.message.toLowerCase().includes('required'))
+          .map((detail) => detail.field);
 
         const response = {
           success: false,
           error: {
-            message: "Request validation failed",
+            message: 'Request validation failed',
             statusCode: 400,
             details: {
               validationDetails,
-              missingFields
-            }
-          }
+              missingFields,
+            },
+          },
         };
-        
+
         reply.code(400).send(response);
         return;
       }
@@ -40,19 +43,19 @@ export function validateBody<T>(schema: z.ZodType<T>) {
   };
 }
 
-export function validateFormData<T, U = T>(schema: z.ZodType<T, any, U>) {
+export function validateFormData<T, U = T>(schema: z.ZodType<T, U>) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     const file = await request.file();
     if (!file) {
       const response = {
         success: false,
         error: {
-          message: "No file provided",
+          message: 'No file provided',
           statusCode: 400,
           details: {
-            missingFields: ["file"]
-          }
-        }
+            missingFields: ['file'],
+          },
+        },
       };
       reply.code(400).send(response);
       return;
@@ -60,7 +63,7 @@ export function validateFormData<T, U = T>(schema: z.ZodType<T, any, U>) {
 
     const fields = file.fields as Record<string, MultipartValue>;
     const formData: Record<string, string | undefined> = {};
-    
+
     for (const [key, field] of Object.entries(fields)) {
       formData[key] = typeof field.value === 'string' ? field.value : undefined;
     }
@@ -76,27 +79,27 @@ export function validateFormData<T, U = T>(schema: z.ZodType<T, any, U>) {
           field: err.path.join('.'),
           message: err.message,
         }));
-        
+
         const missingFields = validationDetails
-          .filter(detail => detail.message.toLowerCase().includes('required'))
-          .map(detail => detail.field);
-        
+          .filter((detail) => detail.message.toLowerCase().includes('required'))
+          .map((detail) => detail.field);
+
         const response = {
           success: false,
           error: {
-            message: "Form validation failed",
+            message: 'Form validation failed',
             statusCode: 400,
             details: {
               validationDetails,
-              missingFields
-            }
-          }
+              missingFields,
+            },
+          },
         };
-        
+
         reply.code(400).send(response);
         return;
       }
       throw error;
     }
   };
-} 
+}

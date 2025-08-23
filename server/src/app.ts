@@ -1,18 +1,16 @@
-import cors from "@fastify/cors";
-import formbody from "@fastify/formbody";
-import helmet from "@fastify/helmet";
-import multipart from "@fastify/multipart";
-import websocket from "@fastify/websocket";
-import fastify, { FastifyInstance } from "fastify";
-import pino from "pino";
-import path from "path";
-import fastifyStatic from "@fastify/static";
-
-import { env } from "./config/env.config";
-import { voiceRouter } from "./features/voice";
-import { cameraRouter } from "./features/camera";
-import { audioContentRouter } from "./features/audio-content";
-import { STANDARD } from "./constants/request";
+import path from 'node:path';
+import formbody from '@fastify/formbody';
+import helmet from '@fastify/helmet';
+import multipart from '@fastify/multipart';
+import fastifyStatic from '@fastify/static';
+import websocket from '@fastify/websocket';
+import fastify, { type FastifyInstance } from 'fastify';
+import type pino from 'pino';
+import { env } from './config/env.config';
+import { STANDARD } from './constants/request';
+import { audioContentRouter } from './features/audio-content';
+import { cameraRouter } from './features/camera';
+import { voiceRouter } from './features/voice';
 
 export interface AppOptions {
   logger?: pino.Logger;
@@ -20,71 +18,87 @@ export interface AppOptions {
 
 export async function createApp(options: AppOptions = {}): Promise<FastifyInstance> {
   const server = fastify({
-    logger: options.logger || pino({ level: env.LOG_LEVEL }),
+    logger: {
+      level: options.logger?.level || env.LOG_LEVEL,
+    },
     disableRequestLogging: false,
   });
 
-  // ✅ Serve React build (after client is built)
-  server.register(fastifyStatic, {
-    root: path.join(__dirname, "../client/dist"),
-    prefix: "/", // serve at root
-  });
+  const isProd = env.NODE_ENV === 'production';
 
-  // Register middlewares
-  await server.register(formbody);
-  await server.register(cors, {
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
+  if (isProd) {
+    const SUPABASE_URL = env.SUPABASE_URL;
+    const supabaseUrl = new URL(SUPABASE_URL);
+    const supabaseOrigin = `${supabaseUrl.protocol}//${supabaseUrl.host}`;
+    const supabaseWsOrigin = supabaseOrigin.replace('https://', 'wss://');
 
-      const allowedOrigins = [
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-      ];
+    await server.register(helmet, {
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          connectSrc: ["'self'", supabaseOrigin, supabaseWsOrigin],
+          imgSrc: ["'self'", 'data:', 'blob:'],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          fontSrc: ["'self'", 'https:', 'data:'],
+          frameSrc: ["'self'", supabaseOrigin],
+          mediaSrc: ["'self'", supabaseOrigin, 'blob:', 'data:'],
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+    });
 
-      if (allowedOrigins.includes(origin)) {
-        return cb(null, true);
+    server.addHook('onSend', (_request, reply, _payload, next) => {
+      const ct = String(reply.getHeader('content-type') || '');
+      if (!ct.includes('text/html')) reply.removeHeader('content-security-policy');
+      next();
+    });
+
+    await server.register(multipart, {
+      limits: {
+        fileSize: 10 * 1024 * 1024,
+        files: 1,
+      },
+    });
+
+    server.register(fastifyStatic, {
+      root: path.join(__dirname, '../../client/dist'),
+      prefix: '/',
+    });
+
+    server.setNotFoundHandler((request, reply) => {
+      if (request.raw.method === 'GET' && !request.raw.url?.startsWith('/api')) {
+        return reply.sendFile('index.html');
       }
 
-      return cb(new Error("Not allowed by CORS"), false);
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Accept",
-      "Origin",
-    ],
-  });
-  await server.register(helmet);
-  await server.register(multipart, {
-    limits: {
-      fileSize: 10 * 1024 * 1024,
-      files: 1,
-    },
-  });
+      reply.code(STANDARD.NOT_FOUND).send({
+        success: false,
+        error: {
+          message: `Route ${request.method} ${request.url} not found`,
+          statusCode: STANDARD.NOT_FOUND,
+        },
+      });
+    });
+  } else {
+    await server.register(helmet, { contentSecurityPolicy: false });
+  }
+
+  await server.register(formbody);
   await server.register(websocket);
 
-  // Register API routes
-  await server.register(voiceRouter, { prefix: "/api" });
+  await server.register(voiceRouter, { prefix: '/api' });
   await server.register(cameraRouter);
-  await server.register(audioContentRouter, { prefix: "/api" });
+  await server.register(audioContentRouter, { prefix: '/api' });
 
-  // Global error handler
-  server.setErrorHandler(async (error, request, reply) => {
-    if (error instanceof Error && "code" in error && "statusCode" in error) {
+  server.setErrorHandler(async (error, _request, reply) => {
+    if (error instanceof Error) {
       const apiError = {
-        code: (error as any).code,
+        code: error.code,
         message: error.message,
-        details: (error as any).details,
-        statusCode: (error as any).statusCode,
+        statusCode: error.statusCode,
       };
-      reply.code((error as any).statusCode).send({
+      reply.code(error.statusCode).send({
         success: false,
         error: apiError,
       });
@@ -92,8 +106,8 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
     }
 
     const apiError = {
-      code: "INTERNAL_SERVER_ERROR",
-      message: "An unexpected error occurred",
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'An unexpected error occurred',
       statusCode: STANDARD.INTERNAL_SERVER_ERROR,
     };
     reply.code(STANDARD.INTERNAL_SERVER_ERROR).send({
@@ -102,25 +116,9 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
     });
   });
 
-  // ✅ NotFound handler: serve React index.html for SPA routes
-  server.setNotFoundHandler((request, reply) => {
-    if (request.raw.method === "GET" && !request.raw.url?.startsWith("/api")) {
-      return reply.sendFile("index.html");
-    }
-
-    reply.code(STANDARD.NOT_FOUND).send({
-      success: false,
-      error: {
-        message: `Route ${request.method} ${request.url} not found`,
-        statusCode: STANDARD.NOT_FOUND,
-      },
-    });
-  });
-
-  // Health check endpoint
-  server.get("/health", async (_request, reply) => {
+  server.get('/health', async (_request, reply) => {
     const healthData = {
-      status: "healthy",
+      status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: env.NODE_ENV,
@@ -129,21 +127,6 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
     reply.status(STANDARD.OK).send({
       success: true,
       data: healthData,
-    });
-  });
-
-  // Root endpoint
-  server.get("/", (_request, reply) => {
-    const apiInfo = {
-      name: "Voice Care API",
-      version: "1.0.0",
-      environment: env.NODE_ENV,
-      status: "running",
-    };
-
-    reply.status(STANDARD.OK).send({
-      success: true,
-      data: apiInfo,
     });
   });
 
@@ -157,7 +140,7 @@ export async function startServer(): Promise<FastifyInstance> {
   const host = env.API_HOST;
 
   // Graceful shutdown
-  const signals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
+  const signals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM'];
   signals.forEach((signal) => {
     process.on(signal, async () => {
       try {
@@ -165,7 +148,7 @@ export async function startServer(): Promise<FastifyInstance> {
         app.log.info(`Closed application on ${signal}`);
         process.exit(0);
       } catch (err) {
-        app.log.error(`Error closing application on ${signal}`, err);
+        app.log.error(err, `Error closing application on ${signal}`);
         process.exit(1);
       }
     });

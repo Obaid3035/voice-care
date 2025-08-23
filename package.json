@@ -1,0 +1,31 @@
+{
+  "name": "voice-clone",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c auto \"npm:dev -w server\" \"npm:dev -w client\"",
+    "build": "npm run build -w server && npm run build -w client",
+    "start": "npm run start -w server",
+    "clean:modules": "rm -rf node_modules server/node_modules client/node_modules",
+    "clean:all": "rm -rf node_modules server/node_modules client/node_modules package-lock.json server/package-lock.json client/package-lock.json",
+    "clean:build": "rm -rf **/*.tsbuildinfo **/dist **/build",
+    "reset:lock": "rm -rf package-lock.json && npm install",
+    "biome:check": "biome check .",
+    "biome:check:fix": "biome check --write .",
+    "biome:format": "biome format --write .",
+    "biome:format:check": "biome format .",
+    "biome:lint": "biome lint .",
+    "biome:lint:fix": "biome lint --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "concurrently": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9"
+  }
+}

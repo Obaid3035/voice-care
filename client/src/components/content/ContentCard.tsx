@@ -1,10 +1,4 @@
-import {
-    Calendar,
-    Clock, MoreVertical,
-    Pause,
-    Play, Trash2,
-    User
-} from 'lucide-react';
+import { Calendar, Clock, MoreVertical, Pause, Play, Trash2, User } from 'lucide-react';
 
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -12,15 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { QueueButton } from './QueueButton';
 import { usePlayQueue } from '@/hooks/usePlayQueue';
 import type { AudioContent } from '@/types';
+import { QueueButton } from './QueueButton';
 
 interface ContentCardProps {
   content: AudioContent;
@@ -51,13 +45,10 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString();
 };
 
-export function ContentCard({
-  content,
-  onDelete,
-}: ContentCardProps) {
+export function ContentCard({ content, onDelete }: ContentCardProps) {
   const { currentTrack, isPlaying, playTrack, pauseTrack } = usePlayQueue();
   const [isHovered, setIsHovered] = useState(false);
-  
+
   const isCurrentTrackPlaying = currentTrack?.id === content.id && isPlaying;
 
   return (
@@ -176,7 +167,7 @@ export function ContentCard({
               <span>{isCurrentTrackPlaying ? 'Pause' : 'Play Now'}</span>
             </div>
           </Button>
-          
+
           <QueueButton track={content} />
         </div>
       </CardContent>

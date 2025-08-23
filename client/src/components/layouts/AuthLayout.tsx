@@ -1,6 +1,6 @@
 import { Baby, Mic2, Music } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 
 interface AuthLayoutProps {
   children: ReactNode;

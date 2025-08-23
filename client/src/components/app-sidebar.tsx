@@ -1,16 +1,16 @@
 import {
   Baby,
   Bell,
+  ChevronUp,
   LayoutDashboard,
   LogOut,
   Mic2,
-  PlayCircle,
-  Settings,
-  User,
   Monitor,
   Moon,
+  PlayCircle,
+  Settings,
   Sun,
-  ChevronUp,
+  User,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useLocation, useNavigate } from 'react-router-dom';

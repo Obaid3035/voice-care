@@ -1,4 +1,4 @@
-import { Mic, MicOff, Volume2, Clock } from 'lucide-react';
+import { Clock, Mic, MicOff, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -65,10 +65,10 @@ export function VoiceRecordingStep({
         </div>
 
         {/* Voice Level Visualizer */}
-        <VoiceLevelVisualizer 
-          isRecording={recordingState.isRecording} 
+        <VoiceLevelVisualizer
+          isRecording={recordingState.isRecording}
           isPaused={recordingState.isPaused}
-          stream={stream} 
+          stream={stream}
         />
 
         {/* Reading Text */}

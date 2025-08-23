@@ -1,5 +1,8 @@
+import { Loader2, Mic, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -18,9 +21,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import { Mic, Sparkles, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
 import { createAudioContent } from '../../lib/api';
 
 export interface GenerateAudioData {

@@ -1,7 +1,5 @@
 import { supabase } from '@/lib/supabase';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 // Get auth token
 async function getAuthToken() {
   const {
@@ -13,7 +11,7 @@ async function getAuthToken() {
 // Voice API functions
 export async function getVoiceClones() {
   const token = await getAuthToken();
-  const response = await fetch(`${API_BASE_URL}/api/voice-clones`, {
+  const response = await fetch('/api/voice-clones', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -28,7 +26,7 @@ export async function getVoiceClones() {
 
 export async function createVoiceClone(formData: FormData) {
   const token = await getAuthToken();
-  const response = await fetch(`${API_BASE_URL}/api/voice-clones`, {
+  const response = await fetch('/api/voice-clones', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -45,7 +43,7 @@ export async function createVoiceClone(formData: FormData) {
 
 export async function createAudioContent(data: { prompt: string; language: string }) {
   const token = await getAuthToken();
-  const response = await fetch(`${API_BASE_URL}/api/audio-content`, {
+  const response = await fetch('/api/audio-content', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -63,7 +61,7 @@ export async function createAudioContent(data: { prompt: string; language: strin
 
 export async function deleteVoiceClone() {
   const token = await getAuthToken();
-  const response = await fetch(`${API_BASE_URL}/api/voice-clones`, {
+  const response = await fetch('/api/voice-clones', {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,

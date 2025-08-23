@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useRecordingContext } from '@/hooks/useRecordingContext';
 import { VoiceProgressIndicator } from './voice-progress-indicator';
-import { VoiceSetupStep } from './voice-setup-step';
 import { VoiceRecordingStep } from './voice-recording-step';
 import { VoiceReviewStep } from './voice-review-step';
+import { VoiceSetupStep } from './voice-setup-step';
 
 interface RecordingState {
   isRecording: boolean;

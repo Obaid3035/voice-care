@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { supabase, type AuthState } from '@/lib/supabase';
 import type { Device } from '@/components/device/types';
+import { type AuthState, supabase } from '@/lib/supabase';
 import type { User } from '../types';
 
 interface Child {
@@ -25,10 +25,10 @@ export function useAuth() {
           data: { session },
         } = await supabase.auth.getSession();
 
-        if (session?.user) {
+        if (session?.user?.email) {
           const user: User = {
             id: session.user.id,
-            email: session.user.email!,
+            email: session.user.email,
             name: session.user.user_metadata?.name || session.user.email?.split('@')[0],
             onboardingCompleted: session.user.user_metadata?.onboardingCompleted || false,
           };
@@ -47,7 +47,7 @@ export function useAuth() {
             needsOnboarding: false,
           });
         }
-      } catch (error) {
+      } catch (_error) {
         setAuthState({
           user: null,
           isAuthenticated: false,
@@ -62,18 +62,10 @@ export function useAuth() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state change:', event, session?.user?.id);
-      
-      if (event === 'PASSWORD_RECOVERY') {
-        // Handle password recovery - don't set as authenticated
-        console.log('Password recovery event detected');
-        return;
-      }
-      
-      if (event === 'SIGNED_IN' && session?.user) {
+      if (event === 'SIGNED_IN' && session?.user && session.user.email) {
         const user: User = {
           id: session.user.id,
-          email: session.user.email!,
+          email: session.user.email,
           name: session.user.user_metadata?.name || session.user.email?.split('@')[0],
           onboardingCompleted: session.user.user_metadata?.onboardingCompleted || false,
         };

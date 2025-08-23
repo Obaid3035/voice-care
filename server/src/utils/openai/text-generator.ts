@@ -1,4 +1,4 @@
-import { openai } from "../../config/services.config";
+import { openai } from '../../config/services.config';
 
 interface GeneratedContent {
   title: string;
@@ -68,20 +68,20 @@ Language: Respond in the same language as the user's request, but if it's not a 
 
 export const generateToddlerContent = async (
   prompt: string,
-  language: string = "en"
+  language: string = 'en'
 ): Promise<GeneratedContent> => {
   try {
     const userMessage = `Language: ${language}\nUser Request: ${prompt}`;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: 'gpt-4',
       messages: [
         {
-          role: "system",
+          role: 'system',
           content: SYSTEM_PROMPT,
         },
         {
-          role: "user",
+          role: 'user',
           content: userMessage,
         },
       ],
@@ -90,13 +90,13 @@ export const generateToddlerContent = async (
     });
 
     const response = completion.choices[0]?.message?.content;
-    
+
     if (!response) {
-      throw new Error("No response from OpenAI");
+      throw new Error('No response from OpenAI');
     }
 
     let cleanedResponse = response.trim();
-    
+
     if (cleanedResponse.startsWith('```json')) {
       cleanedResponse = cleanedResponse.replace(/```json\s*/, '').replace(/```\s*$/, '');
     } else if (cleanedResponse.startsWith('```')) {
@@ -105,28 +105,35 @@ export const generateToddlerContent = async (
 
     try {
       const parsed = JSON.parse(cleanedResponse);
-      
-      if (typeof parsed.title !== "string" || typeof parsed.content !== "string") {
-        throw new Error("Invalid JSON structure - missing title or content fields");
+
+      if (typeof parsed.title !== 'string' || typeof parsed.content !== 'string') {
+        throw new Error('Invalid JSON structure - missing title or content fields');
       }
 
       return {
         title: parsed.title,
         content: parsed.content,
       };
-    } catch (parseError) {
-      console.warn("OpenAI response was not valid JSON, creating fallback. Original response:", response);
-      
+    } catch (_parseError) {
+      console.warn(
+        'OpenAI response was not valid JSON, creating fallback. Original response:',
+        response
+      );
+
       const fallbackContent = extractContentFromInvalidResponse(response);
-      
+
       return {
-        title: fallbackContent.title || "A Gentle Story",
-        content: fallbackContent.content || "Once upon a time, there was a little bunny who loved to hop and play. The bunny had many friends in the forest, and they all played together happily. The bunny learned that friendship is the most wonderful thing in the whole world. The end.",
+        title: fallbackContent.title || 'A Gentle Story',
+        content:
+          fallbackContent.content ||
+          'Once upon a time, there was a little bunny who loved to hop and play. The bunny had many friends in the forest, and they all played together happily. The bunny learned that friendship is the most wonderful thing in the whole world. The end.',
       };
     }
   } catch (error) {
-    console.error("Error generating content:", error);
-    throw new Error(`Failed to generate content: ${error instanceof Error ? error.message : "Unknown error"}`);
+    console.error('Error generating content:', error);
+    throw new Error(
+      `Failed to generate content: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 };
 
@@ -134,7 +141,7 @@ function extractContentFromInvalidResponse(response: string): { title?: string; 
   try {
     const titleMatch = response.match(/"title":\s*"([^"]+)"/);
     const contentMatch = response.match(/"content":\s*"([^"]+(?:\\.[^"]*)*?)"/);
-    
+
     return {
       title: titleMatch ? titleMatch[1] : undefined,
       content: contentMatch ? contentMatch[1].replace(/\\"/g, '"') : undefined,

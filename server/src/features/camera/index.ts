@@ -1,1 +1,1 @@
-export { cameraRouter } from "../camera/camera.router"; 
+export { cameraRouter } from '../camera/camera.router';

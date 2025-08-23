@@ -8,12 +8,12 @@ import * as z from 'zod';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
@@ -42,7 +42,7 @@ export default function ForgotPassword() {
 
     try {
       const result = await resetPassword(values.email);
-      
+
       if (result.success) {
         setIsSuccess(true);
         toast.success('Password reset email sent! Check your inbox.');
@@ -97,9 +97,9 @@ export default function ForgotPassword() {
             <p className='text-sm text-[rgb(var(--text-secondary))]'>
               Didn't receive the email? Check your spam folder or try again.
             </p>
-            
+
             <div className='space-y-3'>
-              <Button 
+              <Button
                 onClick={() => {
                   setIsSuccess(false);
                   form.reset();
@@ -109,12 +109,8 @@ export default function ForgotPassword() {
               >
                 Try again with different email
               </Button>
-              
-              <Button 
-                onClick={handleBackToLogin}
-                variant='ghost'
-                className='w-full'
-              >
+
+              <Button onClick={handleBackToLogin} variant='ghost' className='w-full'>
                 <ArrowLeft className='w-4 h-4 mr-2' />
                 Back to sign in
               </Button>
@@ -183,11 +179,7 @@ export default function ForgotPassword() {
           </Button>
 
           <div className='text-center'>
-            <Button 
-              onClick={handleBackToLogin}
-              variant='ghost'
-              className='auth-link'
-            >
+            <Button onClick={handleBackToLogin} variant='ghost' className='auth-link'>
               <ArrowLeft className='w-4 h-4 mr-2' />
               Back to sign in
             </Button>

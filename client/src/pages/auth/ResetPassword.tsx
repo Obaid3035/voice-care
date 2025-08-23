@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -47,7 +47,7 @@ export default function ResetPassword() {
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   const { updatePassword, getSession, logout } = useAuth();
-  
+
   const [hasValidSession, setHasValidSession] = useState<boolean | null>(null);
 
   const form = useForm<ResetPasswordFormValues>({
@@ -62,7 +62,6 @@ export default function ResetPassword() {
     const checkSession = async () => {
       try {
         const session = await getSession();
-        console.log('Session check result:', !!session);
         setHasValidSession(!!session);
       } catch (error) {
         console.error('Error checking session:', error);
@@ -96,7 +95,7 @@ export default function ResetPassword() {
 
     try {
       const result = await updatePassword(values.password);
-      
+
       if (result.success) {
         setIsSuccess(true);
         toast.success('Password reset successfully! You can now sign in with your new password.');
@@ -164,10 +163,7 @@ export default function ResetPassword() {
             </AlertDescription>
           </Alert>
 
-          <Button 
-            onClick={handleBackToLogin}
-            className='form-button w-full'
-          >
+          <Button onClick={handleBackToLogin} className='form-button w-full'>
             Back to sign in
           </Button>
         </div>
@@ -179,7 +175,9 @@ export default function ResetPassword() {
     return (
       <>
         <div className='space-y-2 text-center lg:text-left animate-fade-in'>
-          <h2 className='text-2xl lg:text-3xl font-bold text-black'>Password reset successfully!</h2>
+          <h2 className='text-2xl lg:text-3xl font-bold text-black'>
+            Password reset successfully!
+          </h2>
           <p className='text-[rgb(var(--text-secondary))]'>
             Your password has been updated. You can now sign in with your new password.
           </p>
@@ -188,14 +186,12 @@ export default function ResetPassword() {
         <div className='space-y-6'>
           <Alert className='border-green-200 bg-green-50 text-green-800'>
             <AlertDescription>
-              Your password has been successfully reset. You will be automatically redirected to the login page in a few seconds.
+              Your password has been successfully reset. You will be automatically redirected to the
+              login page in a few seconds.
             </AlertDescription>
           </Alert>
 
-          <Button 
-            onClick={handleBackToLogin}
-            className='form-button w-full'
-          >
+          <Button onClick={handleBackToLogin} className='form-button w-full'>
             Sign in now
           </Button>
         </div>
@@ -207,9 +203,7 @@ export default function ResetPassword() {
     <>
       <div className='space-y-2 text-center lg:text-left animate-fade-in'>
         <h2 className='text-2xl lg:text-3xl font-bold text-black'>Set new password</h2>
-        <p className='text-[rgb(var(--text-secondary))]'>
-          Enter your new password below.
-        </p>
+        <p className='text-[rgb(var(--text-secondary))]'>Enter your new password below.</p>
       </div>
 
       <Form {...form}>
@@ -309,11 +303,7 @@ export default function ResetPassword() {
           </Button>
 
           <div className='text-center'>
-            <button 
-              type='button'
-              onClick={handleBackToLogin}
-              className='auth-link text-sm'
-            >
+            <button type='button' onClick={handleBackToLogin} className='auth-link text-sm'>
               Back to sign in
             </button>
           </div>

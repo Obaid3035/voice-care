@@ -3,7 +3,7 @@
  * Provides standardized error classes for different HTTP status codes
  */
 
-import { STANDARD } from "../constants/request";
+import { STANDARD } from '../constants/request';
 
 // Base HTTP Error class
 export class HttpError extends Error {
@@ -25,21 +25,21 @@ export class BadRequest extends HttpError {
 
 // 401 Unauthorized
 export class Unauthorized extends HttpError {
-  constructor(message: string = "Authentication failed") {
+  constructor(message: string = 'Authentication failed') {
     super(message, STANDARD.UNAUTHORIZED);
   }
 }
 
 // 403 Forbidden
 export class Forbidden extends HttpError {
-  constructor(message: string = "Access denied") {
+  constructor(message: string = 'Access denied') {
     super(message, STANDARD.FORBIDDEN);
   }
 }
 
 // 404 Not Found
 export class NotFound extends HttpError {
-  constructor(message: string = "Resource not found") {
+  constructor(message: string = 'Resource not found') {
     super(message, STANDARD.NOT_FOUND);
   }
 }
@@ -60,20 +60,20 @@ export class UnprocessableEntity extends HttpError {
 
 // 500 Internal Server Error
 export class InternalServerError extends HttpError {
-  constructor(message: string = "Internal server error") {
+  constructor(message: string = 'Internal server error') {
     super(message, STANDARD.INTERNAL_SERVER_ERROR);
   }
 }
 
 // 503 Service Unavailable
 export class ServiceUnavailable extends HttpError {
-  constructor(message: string = "Service unavailable") {
+  constructor(message: string = 'Service unavailable') {
     super(message, STANDARD.SERVICE_UNAVAILABLE);
   }
-} 
+}
 
 export class NotFoundError extends HttpError {
-  constructor(message: string = "Resource not found") {
+  constructor(message: string = 'Resource not found') {
     super(message, STANDARD.NOT_FOUND);
   }
 }

@@ -1,23 +1,23 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { useAuth } from '@/hooks/useAuth';
-import { RecordingProvider } from '@/hooks/useRecordingContext';
 import { PlayQueueProvider } from '@/hooks/usePlayQueue';
-import Login from '@/pages/auth/Login';
-import Register from '@/pages/auth/register';
+import { RecordingProvider } from '@/hooks/useRecordingContext';
 import ForgotPassword from '@/pages/auth/ForgotPassword';
+import Login from '@/pages/auth/Login';
 import ResetPassword from '@/pages/auth/ResetPassword';
+import Register from '@/pages/auth/register';
 import Dashboard from '@/pages/dashboard';
 import ContentLibrary from '@/pages/dashboard/content';
 import DeviceManagement from '@/pages/dashboard/devices';
 import EventLogs from '@/pages/dashboard/logs';
 import SettingsPage from '@/pages/dashboard/settings';
 import VoiceClone from '@/pages/dashboard/voice';
-
+import NotFound from '@/pages/NotFound';
 import Onboarding from '@/pages/onboarding';
-import Loading from './components/shared/loading';
 import { AuthLayout } from './components/layouts/AuthLayout';
 import DashboardLayout from './components/layouts/DashboardLayout';
+import Loading from './components/shared/loading';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading, needsOnboarding } = useAuth();
@@ -194,6 +194,7 @@ function AppContent() {
       />
 
       <Route path='/' element={<Home />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 }

@@ -1,17 +1,14 @@
 import { Headphones } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ContentCard } from './ContentCard';
 import type { AudioContent } from '@/types';
+import { ContentCard } from './ContentCard';
 
 interface ContentGridProps {
   content: AudioContent[];
   onDelete: (id: string) => void;
 }
 
-export function ContentGrid({
-  content,
-  onDelete,
-}: ContentGridProps) {
+export function ContentGrid({ content, onDelete }: ContentGridProps) {
   if (content.length === 0) {
     return (
       <Card className='border-2 border-dashed border-[rgb(var(--border))] bg-gradient-to-br from-[rgb(var(--background))] to-[rgb(var(--background-secondary))]'>
@@ -34,11 +31,7 @@ export function ContentGrid({
   return (
     <div className='grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
       {content.map((item) => (
-        <ContentCard
-          key={item.id}
-          content={item}
-          onDelete={onDelete}
-        />
+        <ContentCard key={item.id} content={item} onDelete={onDelete} />
       ))}
     </div>
   );

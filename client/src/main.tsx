@@ -5,7 +5,7 @@ import './index.css';
 import { ThemeProvider } from 'next-themes';
 import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>

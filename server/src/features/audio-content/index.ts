@@ -1,1 +1,1 @@
-export { default as audioContentRouter } from "./audio-content.router"; 
+export { default as audioContentRouter } from './audio-content.router';

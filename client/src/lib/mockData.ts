@@ -53,8 +53,6 @@ export const mockDevices: Device[] = [
   },
 ];
 
-
-
 // ===== ACTIVITY DATA =====
 export interface ActivityEvent {
   id: string;

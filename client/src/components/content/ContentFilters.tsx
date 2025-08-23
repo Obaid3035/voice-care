@@ -1,7 +1,6 @@
 import { Search, SortAsc, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { ContentFilters as ContentFiltersType } from '@/types';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import type { ContentFilters as ContentFiltersType } from '@/types';
 
 const sortOptions = [
   { value: 'recent', label: 'Most Recent' },

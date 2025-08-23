@@ -1,4 +1,7 @@
-import { Mic, Plus, BarChart3, Globe, Clock, HardDrive, Calendar, Trash2 } from 'lucide-react';
+import { BarChart3, Calendar, Clock, Globe, HardDrive, Mic, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import DashboardLayout from '@/components/layouts/DashboardLayout';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,17 +13,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import DashboardLayout from '@/components/layouts/DashboardLayout';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { VoiceRecordingForm } from '@/components/voice/voice-recording-form';
 import { InfoWidget } from '@/components/voice/info-widget';
+import { VoiceRecordingForm } from '@/components/voice/voice-recording-form';
+import { createVoiceClone, deleteVoiceClone, getVoiceClones } from '@/lib/api';
 import type { IVoiceClone } from '@/types';
-import { createVoiceClone, getVoiceClones, deleteVoiceClone } from '@/lib/api';
 import { formatDate, formatDuration, formatFileSize } from '../../lib/utils';
 
 export default function VoiceClone() {
@@ -84,7 +84,7 @@ export default function VoiceClone() {
       } else {
         toast.error(response.error || 'Failed to delete voice clone');
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('An error occurred while deleting the voice clone');
     } finally {
       setLoadingVoice(false);
@@ -106,7 +106,7 @@ export default function VoiceClone() {
         {loadingVoice ? (
           <div className='flex justify-center items-center py-20'>
             <div className='flex flex-col items-center gap-4'>
-              <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-[#303c6c]'></div>
+              <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-[#303c6c]' />
               <p className='text-[rgb(var(--text-secondary))]'>Loading your voice clone...</p>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function VoiceClone() {
                       <div className='flex items-end justify-center gap-1 h-16'>
                         {Array.from({ length: 20 }, (_, i) => (
                           <div
-                            key={i}
+                            key={Date.now()}
                             className='bg-gradient-to-t from-purple-500 to-pink-500 rounded-full animate-pulse'
                             style={{
                               width: '3px',

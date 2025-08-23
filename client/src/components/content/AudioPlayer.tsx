@@ -1,21 +1,21 @@
 import {
-    ChevronDown,
-    ChevronUp,
-    Download,
-    List,
-    Maximize2,
-    Minimize2,
-    MoreHorizontal,
-    Pause,
-    Play,
-    Repeat,
-    Share2,
-    Shuffle,
-    SkipBack,
-    SkipForward,
-    Volume2,
-    VolumeX,
-    X,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  List,
+  Maximize2,
+  Minimize2,
+  MoreHorizontal,
+  Pause,
+  Play,
+  Repeat,
+  Share2,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX,
+  X,
 } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
@@ -23,8 +23,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import type { AudioContent, AudioPlayerState } from '@/types';
 import { usePlayQueue } from '@/hooks/usePlayQueue';
+import type { AudioContent, AudioPlayerState } from '@/types';
 
 interface AudioPlayerProps {
   track: AudioContent;
@@ -48,7 +48,7 @@ export function AudioPlayer({
   playlist = [],
 }: AudioPlayerProps) {
   const { isPlaying, playTrack, pauseTrack, audioElement } = usePlayQueue();
-  
+
   const [playerState, setPlayerState] = useState<AudioPlayerState>({
     isPlaying: false,
     currentTime: 0,
@@ -76,14 +76,8 @@ export function AudioPlayer({
     }
   }, [isFullscreen]);
 
-  // Initialize when track changes
   useEffect(() => {
     if (track) {
-      console.log('AudioPlayer: Track changed', {
-        title: track.title,
-        audio_url: track.audio_url,
-      });
-
       setPlayerState((prev) => ({
         ...prev,
         currentTime: 0,
@@ -144,7 +138,6 @@ export function AudioPlayer({
 
   const togglePlay = async () => {
     if (!track) {
-      console.log('AudioPlayer: Cannot play - track is null');
       return;
     }
 
@@ -197,13 +190,11 @@ export function AudioPlayer({
   };
 
   const formatTime = (seconds: number) => {
-    if (isNaN(seconds)) return '0:00';
+    if (Number.isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
-  // Like functionality removed - not available in current data structure
 
   const handleDragHandleClick = () => {
     setIsExpanded(!isExpanded);

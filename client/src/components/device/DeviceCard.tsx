@@ -1,4 +1,4 @@
-import { AlertTriangle, Baby, Power, Settings, Wifi, Video, Mic, Speaker, Eye } from 'lucide-react';
+import { AlertTriangle, Baby, Eye, Mic, Power, Settings, Speaker, Video, Wifi } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
 import { DeviceConfigSheet } from '@/components/device/DeviceConfigSheet';
@@ -44,8 +44,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
   return (
     <Sheet open={isConfigOpen} onOpenChange={setIsConfigOpen}>
-      <div
-        className='border-[rgb(var(--border))] bg-[rgb(var(--background))] hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[rgb(var(--primary))]/20 rounded-xl border shadow-sm'
+      <button
+        type='button'
+        className='w-full text-left border-[rgb(var(--border))] bg-[rgb(var(--background))] hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[rgb(var(--primary))]/20 rounded-xl border shadow-sm'
         onClick={handleCardClick}
         onKeyDown={handleCardKeyDown}
       >
@@ -158,7 +159,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             </DropdownMenu>
           </div>
         </CardContent>
-      </div>
+      </button>
       <SheetContent className='bg-[rgb(var(--background))] border-[rgb(var(--border))] w-full sm:max-w-lg'>
         <DeviceConfigSheet device={device} />
       </SheetContent>

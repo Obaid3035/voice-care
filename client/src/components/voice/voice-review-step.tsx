@@ -1,4 +1,4 @@
-import { CheckCircle, Pause, Play, RotateCcw, Upload, Loader2 } from 'lucide-react';
+import { CheckCircle, Loader2, Pause, Play, RotateCcw, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';

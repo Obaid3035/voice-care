@@ -1,3 +1,6 @@
+import { Clock, Globe, HardDrive, Mic, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +14,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Globe, HardDrive, Mic, Trash2 } from 'lucide-react';
-
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 import type { IVoiceClone } from '@/types';
 
@@ -31,7 +30,7 @@ export function VoiceCloneCard({ voiceClone, onDelete }: VoiceCloneCardProps) {
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / k ** i).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
   };
 
   const formatDuration = (seconds: number) => {

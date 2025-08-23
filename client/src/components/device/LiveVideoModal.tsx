@@ -1,9 +1,9 @@
+import { Camera, Play, RefreshCw, Square, Wifi, WifiOff } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Camera, Wifi, WifiOff, Play, Square, RefreshCw } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface LiveVideoModalProps {
   isOpen: boolean;
@@ -250,7 +250,7 @@ export function LiveVideoModal({ isOpen, onClose, deviceName }: LiveVideoModalPr
             {/* Live Indicator */}
             <div className='absolute top-4 left-4'>
               <div className='flex items-center gap-2 px-3 py-1 bg-green-500/90 text-white rounded-full text-sm'>
-                <div className='w-2 h-2 bg-white rounded-full animate-pulse'></div>
+                <div className='w-2 h-2 bg-white rounded-full animate-pulse' />
                 Live
               </div>
             </div>
@@ -278,11 +278,11 @@ export function LiveVideoModal({ isOpen, onClose, deviceName }: LiveVideoModalPr
               <div className='flex items-center gap-1'>
                 <div
                   className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}
-                ></div>
+                />
                 {isConnected ? 'Connected' : 'Disconnected'}
               </div>
               <div className='flex items-center gap-1'>
-                <div className='w-2 h-2 bg-blue-500 rounded-full'></div>
+                <div className='w-2 h-2 bg-blue-500 rounded-full' />
                 HD
               </div>
               {lastFrameTime && (

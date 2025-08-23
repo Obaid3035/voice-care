@@ -75,7 +75,12 @@ function SidebarProvider({
       }
 
       // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      const setCookie = (name: string, value: string, maxAge: number) => {
+        const cookie = `${name}=${value}; path=/; max-age=${maxAge}; SameSite=Strict`;
+        // biome-ignore lint/suspicious/noDocumentCookie: Controlled cookie setting with security attributes
+        document.cookie = cookie;
+      };
+      setCookie(SIDEBAR_COOKIE_NAME, String(openState), SIDEBAR_COOKIE_MAX_AGE);
     },
     [setOpenProp, open]
   );

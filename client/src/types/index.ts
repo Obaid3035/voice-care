@@ -33,7 +33,6 @@ export interface AudioPlayerState {
   isRepeat: boolean;
   isShuffle: boolean;
 }
-
 export interface User {
   id: string;
   email: string;
