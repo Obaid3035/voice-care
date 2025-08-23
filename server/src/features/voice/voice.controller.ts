@@ -89,13 +89,10 @@ export const deleteVoiceCloneController = async (
       throw new Error('No voice found for this user');
     }
 
-    try {
-      await elevenLabsClient.voices.delete(voice.elevenlabs_voice_id);
-    } catch (elevenLabsError) {
-      console.error('Failed to delete from ElevenLabs:', elevenLabsError);
-    }
-
-    await deleteVoice(user_id);
+    await Promise.all([
+      elevenLabsClient.voices.delete(voice.elevenlabs_voice_id),
+      deleteVoice(user_id),
+    ]);
 
     const response = {
       success: true,
