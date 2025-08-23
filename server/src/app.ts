@@ -5,6 +5,9 @@ import multipart from "@fastify/multipart";
 import websocket from "@fastify/websocket";
 import fastify, { FastifyInstance } from "fastify";
 import pino from "pino";
+import path from "path";
+import fastifyStatic from "@fastify/static";
+
 import { env } from "./config/env.config";
 import { voiceRouter } from "./features/voice";
 import { cameraRouter } from "./features/camera";
@@ -17,8 +20,14 @@ export interface AppOptions {
 
 export async function createApp(options: AppOptions = {}): Promise<FastifyInstance> {
   const server = fastify({
-    logger: options.logger || pino({ level: env.LOG_LEVEL }), 
+    logger: options.logger || pino({ level: env.LOG_LEVEL }),
     disableRequestLogging: false,
+  });
+
+  // ✅ Serve React build (after client is built)
+  server.register(fastifyStatic, {
+    root: path.join(__dirname, "../client/dist"),
+    prefix: "/", // serve at root
   });
 
   // Register middlewares
@@ -26,20 +35,20 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
   await server.register(cors, {
     origin: (origin, cb) => {
       if (!origin) return cb(null, true);
-      
+
       const allowedOrigins = [
-        "http://localhost:5173", 
-        "http://localhost:3000", 
-        "http://localhost:3001", 
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://localhost:3001",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
       ];
-      
+
       if (allowedOrigins.includes(origin)) {
         return cb(null, true);
       }
-      
+
       return cb(new Error("Not allowed by CORS"), false);
     },
     credentials: true,
@@ -61,55 +70,51 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
   });
   await server.register(websocket);
 
- 
-
-  // Register routes
+  // Register API routes
   await server.register(voiceRouter, { prefix: "/api" });
   await server.register(cameraRouter);
   await server.register(audioContentRouter, { prefix: "/api" });
-  
 
   // Global error handler
-  server.setErrorHandler(async (error, request, reply) => {    
-    // Handle AppError instances
-    if (error instanceof Error && 'code' in error && 'statusCode' in error) {
+  server.setErrorHandler(async (error, request, reply) => {
+    if (error instanceof Error && "code" in error && "statusCode" in error) {
       const apiError = {
         code: (error as any).code,
         message: error.message,
         details: (error as any).details,
         statusCode: (error as any).statusCode,
       };
-      const response = {
+      reply.code((error as any).statusCode).send({
         success: false,
-        error: apiError
-      };
-      reply.code((error as any).statusCode).send(response);
+        error: apiError,
+      });
       return;
     }
 
-    // Handle unknown errors
     const apiError = {
       code: "INTERNAL_SERVER_ERROR",
       message: "An unexpected error occurred",
       statusCode: STANDARD.INTERNAL_SERVER_ERROR,
     };
-    const response = {
+    reply.code(STANDARD.INTERNAL_SERVER_ERROR).send({
       success: false,
-      error: apiError
-    };
-    reply.code(STANDARD.INTERNAL_SERVER_ERROR).send(response);
+      error: apiError,
+    });
   });
 
-  // Custom 404 handler
-  server.setNotFoundHandler(async (request, reply) => {
-    const response = {
+  // ✅ NotFound handler: serve React index.html for SPA routes
+  server.setNotFoundHandler((request, reply) => {
+    if (request.raw.method === "GET" && !request.raw.url?.startsWith("/api")) {
+      return reply.sendFile("index.html");
+    }
+
+    reply.code(STANDARD.NOT_FOUND).send({
       success: false,
       error: {
         message: `Route ${request.method} ${request.url} not found`,
-        statusCode: STANDARD.NOT_FOUND
-      }
-    };
-    reply.code(STANDARD.NOT_FOUND).send(response);
+        statusCode: STANDARD.NOT_FOUND,
+      },
+    });
   });
 
   // Health check endpoint
@@ -121,11 +126,10 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
       environment: env.NODE_ENV,
     };
 
-    const response = {
+    reply.status(STANDARD.OK).send({
       success: true,
-      data: healthData
-    };
-    reply.status(STANDARD.OK).send(response);
+      data: healthData,
+    });
   });
 
   // Root endpoint
@@ -137,11 +141,10 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
       status: "running",
     };
 
-    const response = {
+    reply.status(STANDARD.OK).send({
       success: true,
-      data: apiInfo
-    };
-    reply.status(STANDARD.OK).send(response);
+      data: apiInfo,
+    });
   });
 
   return server;
@@ -149,11 +152,11 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
 
 export async function startServer(): Promise<FastifyInstance> {
   const app = await createApp();
-  
+
   const port = Number(env.API_PORT);
   const host = env.API_HOST;
 
-  // Graceful shutdown handling
+  // Graceful shutdown
   const signals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
   signals.forEach((signal) => {
     process.on(signal, async () => {
@@ -169,10 +172,7 @@ export async function startServer(): Promise<FastifyInstance> {
   });
 
   try {
-    await app.listen({
-      port,
-      host,
-    });
+    await app.listen({ port, host });
     app.log.info(`Server listening on ${host}:${port}`);
   } catch (err) {
     app.log.error(err);
@@ -180,4 +180,4 @@ export async function startServer(): Promise<FastifyInstance> {
   }
 
   return app;
-} 
+}

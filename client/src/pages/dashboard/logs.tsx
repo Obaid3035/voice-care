@@ -233,7 +233,7 @@ export default function EventLogs() {
             </Card>
           ) : (
             <div className='space-y-4'>
-              {filteredEvents.map((event) => (
+              {filteredEvents.map((event) => ( 
                 <EventLogCard key={event.id} event={event} />
               ))}
             </div>
