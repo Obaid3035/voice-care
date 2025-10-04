@@ -2,11 +2,26 @@ import type { User } from '../../types';
 import { supabase } from '../supabase';
 
 async function getAuthToken() {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  console.log('session', session);
-  return session?.access_token;
+  try {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+
+    if (error) {
+      console.error('Error getting session:', error);
+      throw error;
+    }
+
+    if (!session?.access_token) {
+      throw new Error('No access token available');
+    }
+
+    return session.access_token;
+  } catch (error) {
+    console.error('getAuthToken failed:', error);
+    throw error;
+  }
 }
 
 export const getUser = async (): Promise<User> => {
