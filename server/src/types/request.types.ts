@@ -17,3 +17,7 @@ export interface FastifyRequestWithValidatedBody<T> extends FastifyRequest {
   body: T;
   user: AuthenticatedUser;
 }
+
+export interface FastifyRequestWithUser extends FastifyRequest {
+  user: AuthenticatedUser;
+}

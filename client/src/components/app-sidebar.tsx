@@ -31,7 +31,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 
 const mainNav = [
   {

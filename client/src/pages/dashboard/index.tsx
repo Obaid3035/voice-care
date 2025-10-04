@@ -1,7 +1,7 @@
 import { Baby } from 'lucide-react';
 import { OverviewCards } from '@/components/dashboard/OverviewCards';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 
 function WelcomeBanner() {
   const { user } = useAuth();

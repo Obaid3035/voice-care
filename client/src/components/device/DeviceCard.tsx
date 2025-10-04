@@ -3,7 +3,6 @@ import type React from 'react';
 import { useState } from 'react';
 import { DeviceConfigSheet } from '@/components/device/DeviceConfigSheet';
 import { LiveVideoModal } from '@/components/device/LiveVideoModal';
-import type { Device } from '@/components/device/types';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -15,7 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 interface DeviceCardProps {
-  device: Device;
+  device: any;
 }
 
 export function DeviceCard({ device }: DeviceCardProps) {

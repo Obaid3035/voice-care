@@ -1,13 +1,8 @@
 import { Baby, Camera, CameraOff, Volume2, VolumeX, Wifi } from 'lucide-react';
-import type { Device } from '@/components/device/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockDevices } from '@/lib/mockData';
 
-interface DeviceStatusProps {
-  device: Device;
-}
-
-function CompactDeviceCard({ device }: DeviceStatusProps) {
+function CompactDeviceCard({ device }: any) {
   return (
     <div className='flex items-center justify-between p-3 border border-[rgb(var(--border))] rounded-lg bg-[rgb(var(--background))] hover:shadow-sm transition-shadow'>
       <div className='flex items-center gap-3 flex-1 min-w-0'>

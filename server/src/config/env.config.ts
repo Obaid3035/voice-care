@@ -22,6 +22,9 @@ type EnvConfig = z.infer<typeof envSchema>;
 function loadEnvConfig(): EnvConfig & { EFFECTIVE_PORT: number } {
   const nodeEnv = process.env.NODE_ENV ?? 'production';
   const envFileName = nodeEnv === 'testing' ? '.env.test' : '.env';
+
+  console.log('envFileName', envFileName);
+  console.log('__dirname', path.join(__dirname, '..', '..', envFileName));
   const envPath = path.join(__dirname, '..', '..', envFileName);
 
   if (fs.existsSync(envPath)) {

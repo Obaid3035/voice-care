@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
-import { useAuth } from '@/hooks/useAuth';
 import { PlayQueueProvider } from '@/hooks/usePlayQueue';
 import { RecordingProvider } from '@/hooks/useRecordingContext';
 import ForgotPassword from '@/pages/auth/ForgotPassword';
@@ -18,6 +17,7 @@ import Onboarding from '@/pages/onboarding';
 import { AuthLayout } from './components/layouts/AuthLayout';
 import DashboardLayout from './components/layouts/DashboardLayout';
 import Loading from './components/shared/loading';
+import { useAuth } from './contexts/AuthContext';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading, needsOnboarding } = useAuth();
@@ -56,7 +56,7 @@ function OnboardingRoute({ children }: { children: React.ReactNode }) {
 }
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, needsOnboarding } = useAuth();
 
   if (isLoading) {
     return <Loading />;
@@ -64,7 +64,8 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
   // Allow reset password page even when authenticated (for password recovery)
   if (isAuthenticated && window.location.pathname !== '/reset-password') {
-    return <Navigate to='/dashboard' replace />;
+    // Redirect to onboarding if needed, otherwise dashboard
+    return <Navigate to={needsOnboarding ? '/onboarding' : '/dashboard'} replace />;
   }
 
   return <>{children}</>;

@@ -1,8 +1,7 @@
 import { FileText, Music } from 'lucide-react';
-import type { Device } from '@/components/device/types';
 
 // ===== DEVICE DATA =====
-export const mockDevices: Device[] = [
+export const mockDevices = [
   {
     id: '1',
     name: "Emma's Room Device",

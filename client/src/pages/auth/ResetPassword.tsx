@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 
 const formSchema = z
   .object({
@@ -46,9 +46,9 @@ export default function ResetPassword() {
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
-  const { updatePassword, getSession, logout } = useAuth();
+  const { updatePassword, isAuthenticated, logout } = useAuth();
 
-  const [hasValidSession, setHasValidSession] = useState<boolean | null>(null);
+  const [hasValidSession, setHasValidSession] = useState<boolean | null>(isAuthenticated);
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(formSchema),
@@ -57,20 +57,6 @@ export default function ResetPassword() {
       confirmPassword: '',
     },
   });
-
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const session = await getSession();
-        setHasValidSession(!!session);
-      } catch (error) {
-        console.error('Error checking session:', error);
-        setHasValidSession(false);
-      }
-    };
-
-    checkSession();
-  }, [getSession]);
 
   // Auto-redirect to login after successful password reset
   useEffect(() => {

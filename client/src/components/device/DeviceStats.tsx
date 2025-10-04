@@ -1,12 +1,7 @@
 import { Baby } from 'lucide-react';
-import type { Device } from '@/components/device/types';
 import { Card, CardContent } from '@/components/ui/card';
 
-interface DeviceStatsProps {
-  devices: Device[];
-}
-
-export function DeviceStats({ devices }: DeviceStatsProps) {
+export function DeviceStats({ devices }: any) {
   const totalDevices = devices.length;
 
   return (

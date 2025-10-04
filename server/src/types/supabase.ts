@@ -315,18 +315,21 @@ export type Database = {
           email: string;
           full_name: string | null;
           id: string;
+          onboarding: boolean;
         };
         Insert: {
           created_at?: string | null;
           email: string;
           full_name?: string | null;
           id?: string;
+          onboarding?: boolean;
         };
         Update: {
           created_at?: string | null;
           email?: string;
           full_name?: string | null;
           id?: string;
+          onboarding?: boolean;
         };
         Relationships: [];
       };

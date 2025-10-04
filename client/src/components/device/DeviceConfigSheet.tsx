@@ -1,6 +1,5 @@
 import { Lightbulb, Settings } from 'lucide-react';
 import { useState } from 'react';
-import type { Device } from '@/components/device/types';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,11 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
-interface DeviceConfigSheetProps {
-  device: Device;
-}
-
-export function DeviceConfigSheet({ device }: DeviceConfigSheetProps) {
+export function DeviceConfigSheet({ device }: any) {
   const [config, setConfig] = useState(device);
 
   return (

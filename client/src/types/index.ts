@@ -37,7 +37,24 @@ export interface User {
   id: string;
   email: string;
   name?: string;
-  onboardingCompleted?: boolean;
+  onboarding?: boolean; // true = needs onboarding, false = onboarding completed
   created_at?: string;
   updated_at?: string;
+}
+
+export interface Device {
+  id: string;
+  name: string;
+  status: 'online' | 'offline';
+  battery: number;
+  signalStrength: 'excellent' | 'good' | 'fair' | 'poor';
+  cameraEnabled: boolean;
+  cryDetection: boolean;
+  lastActive: string;
+  firmware: string;
+  location: string;
+  playbackDelay: number;
+  fallbackMode: 'lullaby' | 'story' | 'affirmation';
+  lightingMode: 'auto' | 'night' | 'off';
+  lightingBrightness: number;
 }

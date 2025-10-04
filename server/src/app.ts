@@ -10,6 +10,7 @@ import { env } from './config/env.config';
 import { STANDARD } from './constants/request';
 import { audioContentRouter } from './features/audio-content';
 import { cameraRouter } from './features/camera';
+import { userRouter } from './features/user';
 import { voiceRouter } from './features/voice';
 
 export interface AppOptions {
@@ -90,6 +91,7 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
   await server.register(voiceRouter, { prefix: '/api' });
   await server.register(cameraRouter);
   await server.register(audioContentRouter, { prefix: '/api' });
+  await server.register(userRouter, { prefix: '/api' });
 
   server.setErrorHandler(async (error, _request, reply) => {
     if (error instanceof Error) {
