@@ -146,31 +146,31 @@ export type Database = {
           },
         ];
       };
-      device_tokens: {
+      sessions: {
         Row: {
           created_at: string | null;
           device_id: string | null;
-          expiry_time: string | null;
+          expires_at: string | null;
           id: string;
           token: string;
         };
         Insert: {
           created_at?: string | null;
           device_id?: string | null;
-          expiry_time?: string | null;
+          expires_at?: string | null;
           id?: string;
           token: string;
         };
         Update: {
           created_at?: string | null;
           device_id?: string | null;
-          expiry_time?: string | null;
+          expires_at?: string | null;
           id?: string;
           token?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'device_tokens_device_id_fkey';
+            foreignKeyName: 'sessions_device_id_fkey';
             columns: ['device_id'];
             isOneToOne: false;
             referencedRelation: 'devices';
@@ -180,37 +180,25 @@ export type Database = {
       };
       devices: {
         Row: {
-          camera_enabled: boolean | null;
           created_at: string | null;
-          firmware_version: string | null;
           id: string;
-          is_active: boolean | null;
+          mac_address: string;
           name: string | null;
-          serial_number: string | null;
           user_id: string | null;
-          wifi_status: string | null;
         };
         Insert: {
-          camera_enabled?: boolean | null;
           created_at?: string | null;
-          firmware_version?: string | null;
           id?: string;
-          is_active?: boolean | null;
+          mac_address: string;
           name?: string | null;
-          serial_number?: string | null;
           user_id?: string | null;
-          wifi_status?: string | null;
         };
         Update: {
-          camera_enabled?: boolean | null;
           created_at?: string | null;
-          firmware_version?: string | null;
           id?: string;
-          is_active?: boolean | null;
+          mac_address?: string;
           name?: string | null;
-          serial_number?: string | null;
           user_id?: string | null;
-          wifi_status?: string | null;
         };
         Relationships: [
           {

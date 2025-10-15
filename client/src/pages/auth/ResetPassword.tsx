@@ -48,7 +48,7 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const { updatePassword, isAuthenticated, logout } = useAuth();
 
-  const [hasValidSession, setHasValidSession] = useState<boolean | null>(isAuthenticated);
+  const [hasValidSession] = useState<boolean | null>(isAuthenticated);
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(formSchema),

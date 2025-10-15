@@ -43,6 +43,42 @@ export function validateBody<T>(schema: z.ZodType<T>) {
   };
 }
 
+export function validateParams<T>(schema: z.ZodType<T>) {
+  return async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const validatedData = schema.parse(request.params);
+      request.params = validatedData as typeof request.params;
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationDetails = error.issues.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+        }));
+
+        const missingFields = validationDetails
+          .filter((detail) => detail.message.toLowerCase().includes('required'))
+          .map((detail) => detail.field);
+
+        const response = {
+          success: false,
+          error: {
+            message: 'Parameter validation failed',
+            statusCode: 400,
+            details: {
+              validationDetails,
+              missingFields,
+            },
+          },
+        };
+
+        reply.code(400).send(response);
+        return;
+      }
+      throw error;
+    }
+  };
+}
+
 export function validateFormData<T, U = T>(schema: z.ZodType<T, U>) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     const file = await request.file();

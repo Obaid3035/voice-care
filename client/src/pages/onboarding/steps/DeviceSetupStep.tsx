@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { connectToWiFi } from '../../../lib/api/esp32';
 import type { DeviceCredentials } from '..';
 
 interface DeviceSetupStepProps {
@@ -23,7 +24,7 @@ interface DeviceSetupStepProps {
   onNext: () => void;
   onPrevious: () => void;
   isLoading: boolean;
-  userId?: string;
+  userId: string;
 }
 
 export function DeviceSetupStep({
@@ -32,6 +33,7 @@ export function DeviceSetupStep({
   onNext,
   onPrevious,
   isLoading,
+  userId,
 }: DeviceSetupStepProps) {
   const [showWifiPassword, setShowWifiPassword] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -52,19 +54,12 @@ export function DeviceSetupStep({
     try {
       setIsConnecting(true);
 
-      // const response = await connectToWiFi(data.wifiSSID, data.wifiPassword, userId);
+      const response = await connectToWiFi(data.wifiSSID, data.wifiPassword, userId);
 
-      let response = null;
-
-      setTimeout(() => {
-        response = { success: true };
-
-        const success = response.success;
-
-        setConnectionStatus(success ? 'success' : 'error');
-        setIsConnecting(false);
-      }, 500);
-    } catch (_error) {
+      setConnectionStatus(response.success ? 'success' : 'error');
+      setIsConnecting(false);
+    } catch (error) {
+      console.error('Error connecting to WiFi:', error);
       setConnectionStatus('error');
       setIsConnecting(false);
     }
