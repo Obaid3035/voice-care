@@ -1,7 +1,9 @@
 export const connectToWiFi = async (ssid: string, password: string, userId: string) => {
-  const response = await fetch('192.168.72.1/configure', {
+  const response = await fetch('http://192.168.72.1/configure', {
     method: 'POST',
-
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       ssid,
       password,
